@@ -1,0 +1,2 @@
+{name: CobbleGroovy, version: '1.0', main: dev.cobblesword.cobblegroovy.CobbleGroovyPlugin,
+  description: CobbleGroovy}
