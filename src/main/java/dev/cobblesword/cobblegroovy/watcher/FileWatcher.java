@@ -2,7 +2,10 @@ package dev.cobblesword.cobblegroovy.watcher;
 
 import dev.cobblesword.cobblegroovy.CobbleGroovy;
 import dev.cobblesword.cobblegroovy.enviroment.GroovyScript;
+import dev.cobblesword.cobblegroovy.tools.CC;
 import me.lucko.helper.internal.LoaderUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -165,6 +168,14 @@ public class FileWatcher implements Runnable
             try {
                 script.run();
             } catch (Exception e) {
+                for (Player player : Bukkit.getOnlinePlayers())
+                {
+                    if(player.hasPermission("cobblegroovy.message.error"))
+                    {
+                        player.sendMessage(CC.error("CobbleGroovy", "Failure to compile " + path.getFileName()));
+                        player.sendMessage(CC.error("CobbleGroovy", e.getMessage()));
+                    }
+                }
                 e.printStackTrace();
             }
         }
