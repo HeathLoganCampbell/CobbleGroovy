@@ -66,6 +66,7 @@ public class GroovyScript
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if(player.hasPermission("cobblegroovy.message.error"))
                 {
+                    player.sendMessage(CC.error("CobbleGroovy", "Failure to compile " + path.getFileName()));
                     player.sendMessage(CC.error("CobbleGroovy", e.getMessage()));
                 }
             }
