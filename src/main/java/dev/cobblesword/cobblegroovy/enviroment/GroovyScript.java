@@ -1,11 +1,14 @@
 package dev.cobblesword.cobblegroovy.enviroment;
 
+import dev.cobblesword.cobblegroovy.tools.CC;
 import groovy.lang.Binding;
 import groovy.util.GroovyScriptEngine;
 import groovy.util.ResourceException;
 import groovy.util.ScriptException;
 import me.lucko.helper.terminable.composite.CompositeClosingException;
 import me.lucko.helper.terminable.composite.CompositeTerminable;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 
@@ -58,9 +61,14 @@ public class GroovyScript
             compilerConfiguration.addCompilationCustomizers(importCustomizer);
 
             engine.setConfig(compilerConfiguration);
-            System.out.println("Eval " + this.path.toString());
             engine.createScript(this.path.toString(), binding).run();
         } catch (IOException | ResourceException | ScriptException e) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if(player.hasPermission("cobblegroovy.message.error"))
+                {
+                    player.sendMessage(CC.error("CobbleGroovy", e.getMessage()));
+                }
+            }
             e.printStackTrace();
         }
     }
