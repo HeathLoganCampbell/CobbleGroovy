@@ -1,14 +1,17 @@
 package dev.cobblesword.cobblegroovy.tools;
 
+import me.lucko.helper.internal.LoaderUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -199,5 +202,44 @@ public class ItemStackBuilder {
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		itemStack.setItemMeta(meta);
 		return this;
+	}
+
+	public ItemStackBuilder withNBT(NamespacedKey namespaceKey, double number)
+	{
+		ItemMeta meta = itemStack.getItemMeta();
+		meta.getPersistentDataContainer().set(namespaceKey, PersistentDataType.DOUBLE, number);
+		itemStack.setItemMeta(meta);
+		return this;
+	}
+
+	public ItemStackBuilder withNBT(NamespacedKey namespaceKey, int number)
+	{
+		ItemMeta meta = itemStack.getItemMeta();
+		meta.getPersistentDataContainer().set(namespaceKey, PersistentDataType.INTEGER, number);
+		itemStack.setItemMeta(meta);
+		return this;
+	}
+
+	public ItemStackBuilder withNBT(NamespacedKey namespaceKey, String value)
+	{
+		ItemMeta meta = itemStack.getItemMeta();
+		meta.getPersistentDataContainer().set(namespaceKey, PersistentDataType.STRING, value);
+		itemStack.setItemMeta(meta);
+		return this;
+	}
+
+	public double getNBTAsDouble(NamespacedKey namespaceKey)
+	{
+		return itemStack.getItemMeta().getPersistentDataContainer().get(namespaceKey, PersistentDataType.DOUBLE);
+	}
+
+	public int getNBTAsInt(NamespacedKey namespaceKey)
+	{
+		return itemStack.getItemMeta().getPersistentDataContainer().get(namespaceKey, PersistentDataType.INTEGER);
+	}
+
+	public String getNBTAsString(NamespacedKey namespaceKey)
+	{
+		return itemStack.getItemMeta().getPersistentDataContainer().get(namespaceKey, PersistentDataType.STRING);
 	}
 }

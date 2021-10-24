@@ -3,15 +3,18 @@ package dev.cobblesword.cobblegroovy.watcher;
 import dev.cobblesword.cobblegroovy.CobbleGroovy;
 import dev.cobblesword.cobblegroovy.enviroment.GroovyScript;
 import dev.cobblesword.cobblegroovy.tools.CC;
+import me.lucko.helper.Schedulers;
 import me.lucko.helper.internal.LoaderUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.codehaus.groovy.control.MultipleCompilationErrorsException;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -157,27 +160,69 @@ public class FileWatcher implements Runnable
             }
         }
 
-        // then handle unloads
-        for (GroovyScript s : toUnload)
+        if(toUnload.size() + toUnload.size() != 0)
         {
-            s.close();
-            System.out.println("[LOADER] Unloaded script: " + s.getPath().toString());
+            sendMessageToStaff(CC.info("CobbleGroovy", "Updating scripts"));
         }
 
-        for (GroovyScript script : toLoad) {
-            try {
-                script.run();
-            } catch (Exception e) {
-                for (Player player : Bukkit.getOnlinePlayers())
+        if(toUnload.size() + toUnload.size() != 0)
+        {
+            Schedulers.sync().run(() -> {
+                // then handle unloads
+                long start = System.currentTimeMillis();
+                for (GroovyScript s : toUnload)
                 {
-                    if(player.hasPermission("cobblegroovy.message.error"))
-                    {
-                        player.sendMessage(CC.error("CobbleGroovy", "Failure to compile " + path.getFileName()));
-                        player.sendMessage(CC.error("CobbleGroovy", e.getMessage()));
+                    s.close();
+                    System.out.println("[LOADER] Unloaded script: " + s.getPath().toString());
+                }
+
+                if(toUnload.size() != 0)
+                {
+                    double millsTaken = (System.currentTimeMillis() - start);
+                    sendMessageToStaff(CC.info("CobbleGroovy", millsTaken + "ms to close scripts"));
+                }
+
+                for (GroovyScript script : toLoad) {
+                    try {
+                        script.run();
+                    } catch (Exception e) {
+                        sendMessageToStaff(CC.error("CobbleGroovy", "Failure to compile " + script.getPath().getFileName()));
+                        sendMessageToStaff((CC.error("CobbleGroovy", prettifyErrorMessage(e))));
+
+                        e.printStackTrace();
                     }
                 }
-                e.printStackTrace();
+
+                double millsTaken = (System.currentTimeMillis() - start);
+                sendMessageToStaff(CC.info("CobbleGroovy", millsTaken + "ms to reload"));
+            });
+        }
+    }
+
+    private void sendMessageToStaff(String message)
+    {
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            if(player.hasPermission("cobblegroovy.message.error"))
+            {
+                player.sendMessage(message);
             }
         }
+    }
+
+    private String prettifyErrorMessage(Exception e)
+    {
+        if(e instanceof MultipleCompilationErrorsException)
+        {
+            MultipleCompilationErrorsException compileEx = (MultipleCompilationErrorsException) e;
+            String message = compileEx.getMessage();
+            if(message.contains("Unexpected input:"))
+            {
+                String[] split = message.split("Unexpected input:");
+                return split[0].replaceAll("\r", "");
+            }
+        }
+
+        return e.getMessage();
     }
 }
