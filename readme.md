@@ -68,13 +68,6 @@ Schedulers.async().runRepeating(() -> {
 }, 20, 20).bindWith(registry)
 ```
 
-## Commands
-```groovy
-CustomItems.register(Material.STONE, "ORB_OF_EXAMPLE")
-           .displayName("Orb of Example")
-           .lore("Slay girllll", "Rule the world")
-           .withNBT("Yeet")
-```
 
 ## Commands
 ```groovy
@@ -91,33 +84,6 @@ Events.subscribe(InventoryCloseEvent.class).handler { event ->
 }
 ```
 
-## Runnable
-```groovy
-Sync.create().delay(5).interval(10).run {
-    
-}.run();
-```
-
-```groovy
-Async.create().delay(5).interval(10).run {
-    
-}.run();
-```
-
-## Menu
-```groovy
-def menu = Menu.create(27, 'Hello world')
-menu.set(0, new ItemBuilder(Material.STONE).setDisplayName("Example").build(), { player -> player.sendMessage("Yeet") })
-menu.set(1, new ItemBuilder(Material.STONE).setDisplayName("Example").build())
-menu.open(player)
-```
-
-## Holograms
-```groovy
-Holograms.create(location)
-         .addLine("Hello world")
-         .spawn()
-```
 
 ## Database
 ```groovy
@@ -165,3 +131,5 @@ Commands.create().assertPlayer()
             sender.getInventory().addItem(cheese.getItemStack())
         }.registerAndBind(registry, "cheese")
 ```
+
+For more info on the api, look at lucko's helper repository's wiki
