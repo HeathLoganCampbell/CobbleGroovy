@@ -110,7 +110,7 @@ import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerMoveEvent
 
-// Make it so some items can't be placed
+// create new item, cheese that when eld leaves a trail o sponges
 CustomItem cheese = Items.create("CHEESE", Material.SPONGE)
         .displayName(CC.bYellow + "Cheese")
         .subscribe(PlayerMoveEvent.class, (e, item, customItem) -> {
@@ -125,6 +125,7 @@ CustomItem cheese = Items.create("CHEESE", Material.SPONGE)
         })
 cheese.bindWith(registry)
 
+// Give new custom item
 Commands.create().assertPlayer()
         .handler{cmd ->
             var sender = cmd.sender()
