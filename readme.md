@@ -131,26 +131,37 @@ Database.execute("DELETE FROM table", { statement -> })
 ## CustomItems
 
 ```groovy
+package scripts.global
+
 import dev.cobblesword.cobblegroovy.tools.CC
-import me.lucko.helper.Events
+import dev.cobblesword.cobblegroovy.tools.item.CustomItem
+import dev.cobblesword.cobblegroovy.tools.item.Items
+import me.lucko.helper.Commands
+import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.block.Block
+import org.bukkit.block.BlockFace
+import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerMoveEvent
 
-def lemonItem = CustomItem.create(Material.GOLD_BLOCK, "LEMON")
-        .displayName("Lemon")
-        .LoreSupplier { player, item ->
-            return [CC.red + "Sour", "Owner: " + item.getNBTString("owner")]
-        }
-        .onConsume { player, item ->
-            player.sendMessage("Too sour!")
-        }
-        .build()
+// Make it so some items can't be placed
+CustomItem cheese = Items.create("CHEESE", Material.SPONGE)
+        .displayName(CC.bYellow + "Cheese")
+        .subscribe(PlayerMoveEvent.class, (e, item, customItem) -> {
+            Player player = e.getPlayer();
+            Location location = player.getLocation();
+            Block block = location.getBlock();
+            Block standingBlock = block.getRelative(BlockFace.DOWN);
 
-Events.subscribe(BlockBreakEvent.class).handler{ e ->
-    Block block = e.getBlock()
-    if(block.getType() == Material.JUNGLE_LEAVES)
-    {
-        DropItem(lemonItem, block)
-    }
-}
+            if (standingBlock.getType() != Material.AIR) {
+                standingBlock.setType(Material.SPONGE);
+            }
+        })
+cheese.bindWith(registry)
+
+Commands.create().assertPlayer()
+        .handler{cmd ->
+            var sender = cmd.sender()
+            sender.getInventory().addItem(cheese.getItemStack())
+        }.registerAndBind(registry, "cheese")
 ```
