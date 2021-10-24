@@ -110,7 +110,7 @@ import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerMoveEvent
 
-// create new item, cheese that when eld leaves a trail o sponges
+// create new item, cheese that when eld leaves a trail of sponges
 CustomItem cheese = Items.create("CHEESE", Material.SPONGE)
         .displayName(CC.bYellow + "Cheese")
         .subscribe(PlayerMoveEvent.class, (e, item, customItem) -> {
