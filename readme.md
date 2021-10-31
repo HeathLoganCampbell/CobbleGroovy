@@ -6,7 +6,7 @@ it listens to all changes plugins/CobbleGroovy/scripts
 Pre set up Script Environment:
 https://github.com/HeathLoganCampbell/CobbleGroovy-Scripts
 
-[CobbleSword Services Discord](https://discord.gg/grpktEEM8g)
+## [CobbleSword Services Discord](https://discord.gg/grpktEEM8g)
 
 ## Example of working Groovy Script
 ```groovy
