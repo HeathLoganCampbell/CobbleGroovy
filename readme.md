@@ -136,3 +136,28 @@ Commands.create().assertPlayer()
 ```
 
 For more info on the api, look at lucko's helper repository's wiki
+
+## Future improvement
+To get rid of `.bindWith(registry)` being scrattered everywhere, we need to add our own wrappers to Events, Commands, Schedulers and call Events.init(registry) once the file starts to be read and Events.complete() once the file is finished. the limitation here is we cannot have any registered events async or delayed.
+
+```
+class Events
+{
+  private static GroovyScript currentGroovyScript;
+
+  public static void init(GroovyScript currentGroovyScript)
+  {
+     currentGroovyScript = currentGroovyScript;
+  }
+
+  public static void complete()
+  {
+    currentGroovyScript = null;
+  }
+
+  public static void subscribe(class class, EventPriority eventPriority)
+  {
+    if(currentGroovyScript == null) throw exception;
+    Events.subscribe(class, eventPriority).bindWith(currentGroovyScript)
+  }
+}
