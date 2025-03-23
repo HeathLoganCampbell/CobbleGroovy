@@ -1,0 +1,4 @@
+name: CobbleGroovy
+main: dev.cobblesword.cobblegroovy.CobbleGroovyPlugin
+version: 1.0
+authors: [ Sprock, SprockPls ]

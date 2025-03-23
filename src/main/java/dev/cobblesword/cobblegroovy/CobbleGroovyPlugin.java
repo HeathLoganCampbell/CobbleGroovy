@@ -11,6 +11,9 @@ public class CobbleGroovyPlugin extends JavaPlugin
     @Override
     public void onEnable()
     {
+        while (!CobbleGroovy.getScriptFolder().exists())
+            CobbleGroovy.getScriptFolder().mkdirs();
+
         try {
             FileWatcher fileWatcher = new FileWatcher();
             Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, fileWatcher, 20, 60);
