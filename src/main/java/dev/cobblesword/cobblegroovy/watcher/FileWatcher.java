@@ -1,12 +1,12 @@
 package dev.cobblesword.cobblegroovy.watcher;
 
 import dev.cobblesword.cobblegroovy.CobbleGroovy;
+import dev.cobblesword.cobblegroovy.CobbleGroovyPlugin;
 import dev.cobblesword.cobblegroovy.enviroment.GroovyScript;
 import dev.cobblesword.cobblegroovy.tools.CC;
-import me.lucko.helper.Schedulers;
-import me.lucko.helper.internal.LoaderUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.codehaus.groovy.control.MultipleCompilationErrorsException;
 
 import java.io.File;
@@ -109,7 +109,6 @@ public class FileWatcher implements Runnable
         ScriptRegistry registry = this.scriptRegistry;
 
         // Check watched files
-
         Iterator<WatchKey> keys = this.watchKeys.iterator();
         while (keys.hasNext())
         {
@@ -167,7 +166,7 @@ public class FileWatcher implements Runnable
 
         if(toUnload.size() + toUnload.size() != 0)
         {
-            Schedulers.sync().run(() -> {
+            Bukkit.getScheduler().runTask(JavaPlugin.getPlugin(CobbleGroovyPlugin.class) ,() -> {
                 // then handle unloads
                 long start = System.currentTimeMillis();
                 for (GroovyScript s : toUnload)

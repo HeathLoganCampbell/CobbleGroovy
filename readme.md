@@ -102,7 +102,7 @@ Database.execute("DELETE FROM table", { statement -> })
 package scripts.global
 
 import dev.cobblesword.cobblegroovy.tools.CC
-import dev.cobblesword.cobblegroovy.tools.item.CustomItem
+
 import dev.cobblesword.cobblegroovy.tools.item.Items
 import me.lucko.helper.Commands
 import org.bukkit.Location
@@ -129,7 +129,7 @@ cheese.bindWith(registry)
 
 // Give new custom item
 Commands.create().assertPlayer()
-        .handler{cmd ->
+        .handler { cmd ->
             var sender = cmd.sender()
             sender.getInventory().addItem(cheese.getItemStack())
         }.registerAndBind(registry, "cheese")

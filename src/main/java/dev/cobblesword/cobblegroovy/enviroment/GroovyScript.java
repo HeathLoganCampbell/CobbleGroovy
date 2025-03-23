@@ -1,12 +1,12 @@
 package dev.cobblesword.cobblegroovy.enviroment;
 
+import dev.cobblesword.cobblegroovy.external.CompositeClosingException;
+import dev.cobblesword.cobblegroovy.external.CompositeTerminable;
 import dev.cobblesword.cobblegroovy.tools.CC;
 import groovy.lang.Binding;
 import groovy.util.GroovyScriptEngine;
 import groovy.util.ResourceException;
 import groovy.util.ScriptException;
-import me.lucko.helper.terminable.composite.CompositeClosingException;
-import me.lucko.helper.terminable.composite.CompositeTerminable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.codehaus.groovy.control.CompilerConfiguration;
