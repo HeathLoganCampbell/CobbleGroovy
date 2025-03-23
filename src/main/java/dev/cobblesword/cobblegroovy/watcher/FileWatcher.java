@@ -51,37 +51,26 @@ public class FileWatcher implements Runnable
         }
 
         // Load files in directory
-        for (Path scriptPath : getScripts())
+        GroovyScript oldScript = this.scriptRegistry.getScript(getInitScript());
+        if (Files.exists(path))
         {
-            GroovyScript oldScript = this.scriptRegistry.getScript(scriptPath);
-            if (Files.exists(path))
+            if (oldScript == null)
             {
-                if (oldScript == null)
-                {
-                    GroovyScript script = new GroovyScript(scriptPath);
-                    this.scriptRegistry.register(script);
+                GroovyScript script = new GroovyScript(getInitScript());
+                this.scriptRegistry.register(script);
 
-                    try {
-                        script.run();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    script.run();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
     }
 
-    public List<Path> getScripts()
+    public Path getInitScript()
     {
-        File scriptsFolder = CobbleGroovy.getScriptFolder();
-        try {
-            return Files.walk(scriptsFolder.toPath())
-                    .filter(Files::isRegularFile)
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new File(CobbleGroovy.getScriptFolder(), "init.groovy").toPath();
     }
 
     @Override
