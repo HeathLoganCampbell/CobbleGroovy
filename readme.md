@@ -8,6 +8,10 @@ https://github.com/HeathLoganCampbell/CobbleGroovy-Scripts
 
 ## [CobbleSword Services Discord](https://discord.gg/grpktEEM8g)
 
+## How it works
+* Init.Groovy gets called, this is where you set up your watch files
+
+
 ## Example of working Groovy Script
 ```groovy
 package scripts.global

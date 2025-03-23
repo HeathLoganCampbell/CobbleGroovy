@@ -10,4 +10,9 @@ public class CobbleGroovy
     {
         return new File(CobbleGroovyPlugin.getPlugin(CobbleGroovyPlugin.class).getDataFolder(), "scripts");
     }
+
+    public static void watch(String... files)
+    {
+
+    }
 }
