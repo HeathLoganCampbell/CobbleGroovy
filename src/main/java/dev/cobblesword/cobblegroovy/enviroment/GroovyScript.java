@@ -2,7 +2,7 @@ package dev.cobblesword.cobblegroovy.enviroment;
 
 import dev.cobblesword.cobblegroovy.external.CompositeClosingException;
 import dev.cobblesword.cobblegroovy.external.CompositeTerminable;
-import dev.cobblesword.cobblegroovy.tools.CC;
+import dev.cobblesword.cobblegroovy.tools.TT;
 import groovy.lang.Binding;
 import groovy.util.GroovyScriptEngine;
 import groovy.util.ResourceException;
@@ -66,8 +66,8 @@ public class GroovyScript
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if(player.hasPermission("cobblegroovy.message.error"))
                 {
-                    player.sendMessage(CC.error("CobbleGroovy", "Failure to compile " + path.getFileName()));
-                    player.sendMessage(CC.error("CobbleGroovy", e.getMessage()));
+                    player.sendMessage(TT.error("Failure to compile " + path.getFileName()));
+                    player.sendMessage(TT.error(e.getMessage()));
                 }
             }
             e.printStackTrace();

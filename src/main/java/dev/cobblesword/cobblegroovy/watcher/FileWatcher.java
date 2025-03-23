@@ -4,6 +4,7 @@ import dev.cobblesword.cobblegroovy.CobbleGroovy;
 import dev.cobblesword.cobblegroovy.CobbleGroovyPlugin;
 import dev.cobblesword.cobblegroovy.enviroment.GroovyScript;
 import dev.cobblesword.cobblegroovy.tools.CC;
+import dev.cobblesword.cobblegroovy.tools.TT;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -161,7 +162,7 @@ public class FileWatcher implements Runnable
 
         if(toUnload.size() + toUnload.size() != 0)
         {
-            sendMessageToStaff(CC.info("CobbleGroovy", "Updating scripts"));
+            sendMessageToStaff(TT.info("Updating scripts"));
         }
 
         if(toUnload.size() + toUnload.size() != 0)
@@ -178,22 +179,22 @@ public class FileWatcher implements Runnable
                 if(toUnload.size() != 0)
                 {
                     double millsTaken = (System.currentTimeMillis() - start);
-                    sendMessageToStaff(CC.info("CobbleGroovy", millsTaken + "ms to close scripts"));
+                    sendMessageToStaff(TT.info(millsTaken + "ms to close scripts"));
                 }
 
                 for (GroovyScript script : toLoad) {
                     try {
                         script.run();
                     } catch (Exception e) {
-                        sendMessageToStaff(CC.error("CobbleGroovy", "Failure to compile " + script.getPath().getFileName()));
-                        sendMessageToStaff((CC.error("CobbleGroovy", prettifyErrorMessage(e))));
+                        sendMessageToStaff(TT.error("Failure to compile " + script.getPath().getFileName()));
+                        sendMessageToStaff((TT.error(prettifyErrorMessage(e))));
 
                         e.printStackTrace();
                     }
                 }
 
                 double millsTaken = (System.currentTimeMillis() - start);
-                sendMessageToStaff(CC.info("CobbleGroovy", millsTaken + "ms to reload"));
+                sendMessageToStaff(TT.info(millsTaken + "ms to reload"));
             });
         }
     }
